@@ -3,11 +3,27 @@
   position: relative;
 }
 
+.servicesSection .servicesContainer {
+  max-width: 1920px;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.15rem;
   margin-top: 3rem;
+}
+
+@media (min-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1800px) {
+  .grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
 }
 
 .card {
@@ -81,6 +97,19 @@
 @media (max-width: 576px) {
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .overlay {
+    padding: 0.45rem;
+    overflow-y: auto;
+  }
+
+  .cardTitle {
+    font-size: clamp(0.72rem, 3.4vw, 0.95rem);
+  }
+
+  .cardDescription {
+    font-size: clamp(0.64rem, 2.8vw, 0.78rem);
   }
 }
 

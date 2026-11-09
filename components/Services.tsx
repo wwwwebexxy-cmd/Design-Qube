@@ -23,7 +23,7 @@ const services = [
 export default function Services() {
   return (
     <section id="services" className={styles.servicesSection}>
-      <div className="container">
+      <div className={`container ${styles.servicesContainer}`}>
         <ScrollReveal direction="up" delay={0.1}>
           <h2 className="section-title text-gradient">Our Services</h2>
         </ScrollReveal>
