@@ -1,0 +1,114 @@
+.aboutSection {
+  background: var(--background);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+}
+
+.imageWrapper {
+  flex: 1;
+  position: relative;
+  min-height: 500px;
+  width: 100%;
+}
+
+.imageMain {
+  width: 80%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.imageOverlap {
+  width: 65%;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 0;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 2;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  border: 10px solid var(--background);
+}
+
+.textContent {
+  flex: 1;
+}
+
+.heading {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 1rem 0 1.5rem;
+  line-height: 1.2;
+}
+
+.paragraph {
+  font-size: 1.125rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+
+.featureList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.featureList li {
+  position: relative;
+  padding-left: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.125rem;
+  color: var(--foreground);
+}
+
+.featureList li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+@media (max-width: 992px) {
+  .container {
+    flex-direction: column;
+  }
+  
+  .imageWrapper {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .imageWrapper {
+    min-height: 300px;
+  }
+  .imageMain {
+    height: 250px;
+  }
+  .imageOverlap {
+    height: 200px;
+    border-width: 5px;
+  }
+  .heading {
+    font-size: 2rem;
+  }
+  .paragraph {
+    font-size: 1rem;
+  }
+  .featureList li {
+    font-size: 1rem;
+  }
+}

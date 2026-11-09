@@ -1,0 +1,41 @@
+.scrollToTopBtn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  background-color: var(--card-bg);
+  color: var(--primary);
+  border: 1px solid var(--card-border);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+.scrollToTopBtn:hover {
+  background-color: var(--primary);
+  color: var(--foreground);
+  transform: translateY(0) scale(1.1);
+  box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  stroke-width: 2;
+}
