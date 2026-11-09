@@ -1,6 +1,16 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import styles from "./Services.module.css";
 import ScrollReveal from "./ScrollReveal";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 const services = [
   { title: "Commercial & Residential Fit-Out Works", description: "Complete turnkey fit-out for offices, retail shops, showrooms, villas and apartments, from shell and core to fully furnished spaces.", image: "/images/service-fitout.webp" },
@@ -21,8 +31,46 @@ const services = [
 ];
 
 export default function Services() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      const section = sectionRef.current;
+      const cards = section?.querySelectorAll<HTMLElement>(`.${styles.card}`);
+
+      if (
+        !section ||
+        !cards?.length ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ) {
+        return;
+      }
+
+      const parallax = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      cards.forEach((card, index) => {
+        const direction = index % 2 === 0 ? 1 : -1;
+        parallax.fromTo(
+          card,
+          { y: direction * 32 },
+          { y: direction * -32, duration: 1, ease: "none" },
+          0
+        );
+      });
+    },
+    { scope: sectionRef }
+  );
+
   return (
-    <section id="services" className={styles.servicesSection}>
+    <section id="services" ref={sectionRef} className={styles.servicesSection}>
       <div className={`container ${styles.servicesContainer}`}>
         <ScrollReveal direction="up" delay={0.1}>
           <h2 className="section-title text-gradient">Our Services</h2>

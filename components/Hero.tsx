@@ -23,14 +23,19 @@ const hospitalityScenes = [
   "/images/hero-hotel-lounge.webp",
 ];
 
+const headlineScenes = [
+  { firstLine: "Design. Detail.", secondLine: "Deliver." },
+  { firstLine: "Precision meets", secondLine: "design." },
+  { firstLine: "Spaces made", secondLine: "personal." },
+];
+
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const villaLayerRef = useRef<HTMLDivElement>(null);
   const officeLayerRef = useRef<HTMLDivElement>(null);
   const villaFramesRef = useRef<Array<HTMLDivElement | null>>([]);
   const hospitalityFramesRef = useRef<Array<HTMLDivElement | null>>([]);
-  const titleRef = useRef<HTMLDivElement>(null);
-  const copyRef = useRef<HTMLDivElement>(null);
+  const headlineFramesRef = useRef<Array<HTMLSpanElement | null>>([]);
 
   useGSAP(
     () => {
@@ -38,8 +43,6 @@ export default function Hero() {
         !sectionRef.current ||
         !villaLayerRef.current ||
         !officeLayerRef.current ||
-        !titleRef.current ||
-        !copyRef.current ||
         window.matchMedia("(prefers-reduced-motion: reduce)").matches
       ) {
         return;
@@ -51,19 +54,27 @@ export default function Hero() {
       const hospitalityFrames = hospitalityFramesRef.current.filter(
         (frame): frame is HTMLDivElement => frame !== null
       );
-
-      if (villaFrames.length !== villaScenes.length || hospitalityFrames.length !== hospitalityScenes.length) {
+      const headlineFrames = headlineFramesRef.current.filter(
+        (frame): frame is HTMLSpanElement => frame !== null
+      );
+      if (
+        villaFrames.length !== villaScenes.length ||
+        hospitalityFrames.length !== hospitalityScenes.length ||
+        headlineFrames.length !== headlineScenes.length
+      ) {
         return;
       }
 
-      gsap.set([...villaFrames, ...hospitalityFrames], { autoAlpha: 0 });
-      gsap.set([villaFrames[0], hospitalityFrames[0]], { autoAlpha: 1 });
+      gsap.set([...villaFrames, ...hospitalityFrames], { autoAlpha: 0, scale: 1.08 });
+      gsap.set(headlineFrames, { autoAlpha: 0, yPercent: 12 });
+      gsap.set([villaFrames[0], hospitalityFrames[0]], { autoAlpha: 1, scale: 1 });
+      gsap.set(headlineFrames[0], { autoAlpha: 1, yPercent: 0 });
 
       const parallax = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: () => (window.innerWidth <= 768 ? "+=65%" : "+=115%"),
+          end: () => (window.innerWidth <= 768 ? "+=165%" : "+=230%"),
           scrub: 1,
           pin: true,
           anticipatePin: 1,
@@ -73,22 +84,31 @@ export default function Hero() {
 
       parallax
         .to(villaLayerRef.current, { xPercent: -3, yPercent: -17, scale: 1.2, duration: 1, ease: "none" }, 0)
-        .to(officeLayerRef.current, { xPercent: 3, yPercent: 15, scale: 1.2, duration: 1, ease: "none" }, 0)
-        .to(titleRef.current, { yPercent: -28, scale: 0.94, autoAlpha: 0, duration: 0.22, ease: "none" }, 0.76)
-        .to(copyRef.current, { yPercent: 24, autoAlpha: 0, duration: 0.22, ease: "none" }, 0.76);
+        .to(officeLayerRef.current, { xPercent: 3, yPercent: 15, scale: 1.2, duration: 1, ease: "none" }, 0);
 
-      const crossfadeScenes = (frames: HTMLDivElement[]) => {
-        frames.slice(1).forEach((frame, index) => {
-          const position = 0.18 + index * 0.4;
+      [0, 1].forEach((sceneIndex) => {
+        const position = 0.22 + sceneIndex * 0.3;
 
+        [villaFrames, hospitalityFrames].forEach((frames) => {
           parallax
-            .to(frames[index], { autoAlpha: 0, duration: 0.16, ease: "none" }, position)
-            .to(frame, { autoAlpha: 1, duration: 0.16, ease: "none" }, position);
+            .to(frames[sceneIndex], { autoAlpha: 0, scale: 1.1, duration: 0.18, ease: "none" }, position)
+            .fromTo(
+              frames[sceneIndex + 1],
+              { autoAlpha: 0, scale: 1.12 },
+              { autoAlpha: 1, scale: 1, duration: 0.2, ease: "none" },
+              position
+            );
         });
-      };
 
-      crossfadeScenes(villaFrames);
-      crossfadeScenes(hospitalityFrames);
+        parallax
+          .to(headlineFrames[sceneIndex], { autoAlpha: 0, yPercent: -8, duration: 0.07, ease: "none" }, position)
+          .fromTo(
+            headlineFrames[sceneIndex + 1],
+            { autoAlpha: 0, yPercent: 8 },
+            { autoAlpha: 1, yPercent: 0, duration: 0.1, ease: "none" },
+            position + 0.07
+          );
+      });
     },
     { scope: sectionRef }
   );
@@ -116,10 +136,20 @@ export default function Hero() {
               </div>
             ))}
           </div>
-          <div ref={titleRef} className={styles.overlayContent}>
+          <div className={styles.overlayContent}>
             <div className={styles.contentBlock}>
-              <h1 className={styles.title}>
-                Design. Detail.<br /><span className="text-gradient">Deliver.</span>
+              <h1 className={styles.title} aria-label="Design. Detail. Deliver.">
+                <span className={styles.headlineStack} aria-hidden="true">
+                  {headlineScenes.map((scene, index) => (
+                    <span
+                      key={scene.firstLine}
+                      ref={(element) => { headlineFramesRef.current[index] = element; }}
+                      className={styles.headlineFrame}
+                    >
+                      {scene.firstLine}<br /><span className="text-gradient">{scene.secondLine}</span>
+                    </span>
+                  ))}
+                </span>
               </h1>
             </div>
           </div>
@@ -144,7 +174,7 @@ export default function Hero() {
               </div>
             ))}
           </div>
-          <div ref={copyRef} className={styles.overlayContentRight}>
+          <div className={styles.overlayContentRight}>
             <div className={styles.contentBlock}>
               <p className={styles.subtitle}>
                 Interior fit-out and contracting in Abu Dhabi, from the first concept and detailed drawings to precise execution and handover.

@@ -33,6 +33,7 @@
   aspect-ratio: 1 / 1;
   background: var(--surface);
   outline: none;
+  will-change: transform;
 }
 
 .cardImage {

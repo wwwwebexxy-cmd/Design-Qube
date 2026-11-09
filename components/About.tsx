@@ -1,10 +1,57 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import styles from "./About.module.css";
 import ScrollReveal from "./ScrollReveal";
 
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
+
 export default function About() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const textContentRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      const section = sectionRef.current;
+      const mainImage = section?.querySelector<HTMLImageElement>(`.${styles.imageMain} img`);
+      const overlapImage = section?.querySelector<HTMLImageElement>(`.${styles.imageOverlap} img`);
+
+      if (
+        !section ||
+        !mainImage ||
+        !overlapImage ||
+        !textContentRef.current ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ) {
+        return;
+      }
+
+      const parallax = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      parallax
+        .fromTo(mainImage, { yPercent: -18, scale: 1.08 }, { yPercent: 18, scale: 1.14, duration: 1, ease: "none" }, 0)
+        .fromTo(overlapImage, { yPercent: 18, scale: 1.08 }, { yPercent: -18, scale: 1.14, duration: 1, ease: "none" }, 0)
+        .to(textContentRef.current, { yPercent: -8, duration: 1, ease: "none" }, 0);
+    },
+    { scope: sectionRef }
+  );
+
   return (
-    <section id="about" className={styles.aboutSection}>
+    <section id="about" ref={sectionRef} className={styles.aboutSection}>
       <div className={`container ${styles.container}`}>
         <div className={styles.imageWrapper}>
           <ScrollReveal direction="right" className={styles.imageMain}>
@@ -24,7 +71,7 @@ export default function About() {
             />
           </ScrollReveal>
         </div>
-        <div className={styles.textContent}>
+        <div ref={textContentRef} className={styles.textContent}>
           <ScrollReveal direction="up" delay={0.1}>
             <h2 className="section-title text-gradient" style={{ textAlign: "left", margin: 0 }}>About Us</h2>
           </ScrollReveal>
