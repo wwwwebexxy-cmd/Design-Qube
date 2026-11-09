@@ -36,16 +36,19 @@ export default function Hero() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "bottom top",
-          scrub: 0.8,
+          end: () => (window.innerWidth <= 768 ? "+=65%" : "+=115%"),
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
         },
       });
 
       parallax
-        .to(villaLayerRef.current, { yPercent: -7, ease: "none" }, 0)
-        .to(officeLayerRef.current, { yPercent: 9, ease: "none" }, 0)
-        .to(titleRef.current, { yPercent: -12, ease: "none" }, 0)
-        .to(copyRef.current, { yPercent: 9, ease: "none" }, 0);
+        .to(villaLayerRef.current, { xPercent: -3, yPercent: -17, scale: 1.2, ease: "none" }, 0)
+        .to(officeLayerRef.current, { xPercent: 3, yPercent: 15, scale: 1.2, ease: "none" }, 0)
+        .to(titleRef.current, { yPercent: -28, scale: 0.94, autoAlpha: 0, ease: "none" }, 0.42)
+        .to(copyRef.current, { yPercent: 24, autoAlpha: 0, ease: "none" }, 0.42);
     },
     { scope: sectionRef }
   );
@@ -56,7 +59,7 @@ export default function Hero() {
         <div className={styles.topLeftImage}>
           <div ref={villaLayerRef} className={styles.imageLayer} aria-hidden="true">
             <Image
-              src="/images/hero-villa.png"
+              src="/images/hero-villa-scroll.webp"
               alt=""
               fill
               preload
@@ -75,7 +78,7 @@ export default function Hero() {
         <div className={styles.bottomRightImage}>
           <div ref={officeLayerRef} className={`${styles.imageLayer} ${styles.officeLayer}`} aria-hidden="true">
             <Image
-              src="/images/office-fitout.png"
+              src="/images/hero-hospitality-scroll.webp"
               alt=""
               fill
               loading="eager"

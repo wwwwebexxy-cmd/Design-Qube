@@ -9,31 +9,31 @@ const processSteps = [
     id: 1,
     title: "01 Consultation & Site Survey",
     description: "We understand your vision, visit the site and take accurate measurements.",
-    image: "/images/hero-villa.png",
+    images: ["/images/process-survey-1.webp", "/images/process-survey-2.webp"],
   },
   {
     id: 2,
     title: "02 Design & 3D Concept",
     description: "Explore design concepts and material selections before work starts.",
-    image: "/images/bespoke-kitchen.png",
+    images: ["/images/process-concept-1.webp", "/images/process-concept-2.webp"],
   },
   {
     id: 3,
     title: "03 Detailed Drawings & Quote",
     description: "Receive coordinated CAD and MEP drawings with a transparent BOQ.",
-    image: "/images/office-fitout.png",
+    images: ["/images/process-drawings-1.webp", "/images/process-drawings-2.webp"],
   },
   {
     id: 4,
     title: "04 Execution & Project Management",
-    description: "Our skilled team manages the work and keeps you updated throughout.",
-    image: "/images/spa-sauna.png",
+    description: "Our skilled team manages the work and shares daily updates throughout execution.",
+    images: ["/images/process-execution-1.webp", "/images/process-execution-2.webp"],
   },
   {
     id: 5,
     title: "05 Handover & AMC",
     description: "We complete the final snagging and stay on for yearly maintenance support.",
-    image: "/images/office-fitout.png",
+    images: ["/images/process-handover-1.webp", "/images/process-handover-2.webp"],
   },
 ];
 
@@ -48,7 +48,7 @@ export default function StickyFeatures() {
             </ScrollReveal>
             <ScrollReveal direction="up" delay={0.3}>
               <p className={styles.description}>
-                Design and execution under one roof, backed by Abu Dhabi market expertise, detailed drawings and transparent costing. We work with quality materials and skilled teams, deliver on time, and stay for year-round AMC support. See your space in 3D before work starts.
+                One-stop design-to-execution service, Abu Dhabi market expertise, detailed drawings with transparent costing, quality materials and a skilled team, on-time delivery with AMC support, and 3D visualization before work starts.
               </p>
             </ScrollReveal>
           </div>
@@ -69,22 +69,26 @@ export default function StickyFeatures() {
         <ScrollReveal direction="up" delay={0.4}>
           <div className={styles.sliderContainer}>
             <div className={styles.sliderTrack}>
-              {processSteps.concat(processSteps).map((step, index) => (
-                <article key={`${step.id}-${index}`} className={styles.slideCard}>
-                  <Image
-                    src={step.image}
-                    alt={step.title}
-                    width={800}
-                    height={520}
-                    sizes="350px"
-                    className={styles.slideImage}
-                  />
-                  <div className={styles.slideContent}>
-                    <h3 className={styles.slideTitle}>{step.title}</h3>
-                    <p className={styles.slideDesc}>{step.description}</p>
-                  </div>
-                </article>
-              ))}
+              {processSteps.concat(processSteps).map((step, index) => {
+                const imageIndex = index < processSteps.length ? 0 : 1;
+
+                return (
+                  <article key={`${step.id}-${index}`} className={styles.slideCard}>
+                    <Image
+                      src={step.images[imageIndex]}
+                      alt={step.title}
+                      width={800}
+                      height={520}
+                      sizes="350px"
+                      className={styles.slideImage}
+                    />
+                    <div className={styles.slideContent}>
+                      <h3 className={styles.slideTitle}>{step.title}</h3>
+                      <p className={styles.slideDesc}>{step.description}</p>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </ScrollReveal>

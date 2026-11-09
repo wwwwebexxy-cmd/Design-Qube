@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ScrollToTop from "../components/ScrollToTop";
+import FloatingWhatsApp from "../components/FloatingWhatsApp";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
         <Footer />
         <ScrollToTop />
+        <FloatingWhatsApp />
       </body>
     </html>
   );

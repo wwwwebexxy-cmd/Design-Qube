@@ -33,7 +33,7 @@
 
 .imageLayer {
   position: absolute;
-  inset: -14% -5%;
+  inset: -20% -5%;
   will-change: transform;
 }
 
@@ -157,7 +157,7 @@
   }
 
   .imageLayer {
-    inset: -16% -4%;
+    inset: -18% -4%;
   }
 
   .overlayContent {

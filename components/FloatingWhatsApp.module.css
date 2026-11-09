@@ -1,0 +1,75 @@
+.button {
+  position: fixed;
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+  left: max(1.25rem, env(safe-area-inset-left));
+  z-index: 1100;
+  display: grid;
+  width: 3.75rem;
+  height: 3.75rem;
+  place-items: center;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  background: #25d366;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(18, 140, 66, 0.35);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.button:hover,
+.button:focus-visible {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 9px 26px rgba(18, 140, 66, 0.45);
+}
+
+.button:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 4px;
+}
+
+.icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.label {
+  position: absolute;
+  left: calc(100% + 0.75rem);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.35rem;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-0.25rem);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.button:hover .label,
+.button:focus-visible .label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@media (max-width: 480px) {
+  .button {
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    left: max(1rem, env(safe-area-inset-left));
+    width: 3.35rem;
+    height: 3.35rem;
+  }
+
+  .icon {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .label {
+    transition: none;
+  }
+}
