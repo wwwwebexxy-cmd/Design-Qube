@@ -1,12 +1,17 @@
 :root {
-  --background: #000000;
-  --foreground: #ffffff;
-  --primary: #3b82f6;
-  --primary-glow: rgba(59, 130, 246, 0.5);
-  --secondary: #8b5cf6;
-  --card-bg: rgba(255, 255, 255, 0.05);
-  --card-border: rgba(255, 255, 255, 0.1);
-  --text-muted: #a1a1aa;
+  color-scheme: light;
+  --background: #f7f5f0;
+  --foreground: #171613;
+  --primary: #a99672;
+  --primary-glow: rgba(169, 150, 114, 0.36);
+  --secondary: #d1c4aa;
+  --surface: #eeebe4;
+  --card-bg: rgba(255, 255, 255, 0.72);
+  --card-border: rgba(23, 22, 19, 0.12);
+  --text-muted: #68645d;
+  --footer-background: #1d1c19;
+  --footer-foreground: #f7f5f0;
+  --footer-muted: #b8b4ad;
 }
 
 html {
@@ -16,7 +21,7 @@ html {
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -40,16 +45,14 @@ button {
   font-family: inherit;
 }
 
-/* Gradient text utility */
 .text-gradient {
-  background: linear-gradient(to right, var(--primary), var(--secondary));
+  background: linear-gradient(105deg, var(--primary), #c7b28d);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
 }
 
-/* Common Section padding */
 section {
   padding: 6rem 2rem;
   min-height: 100vh;
@@ -77,7 +80,7 @@ section {
   color: var(--text-muted);
   text-align: center;
   max-width: 600px;
-  margin: 0 auto 4rem auto;
+  margin: 0 auto 4rem;
 }
 
 @media (max-width: 768px) {
@@ -85,11 +88,11 @@ section {
     padding: 4rem 1rem;
     min-height: auto;
   }
-  
+
   .section-title {
     font-size: 2rem;
   }
-  
+
   .section-subtitle {
     font-size: 1rem;
     margin-bottom: 2rem;

@@ -27,6 +27,11 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
+.imageMain img,
+.imageOverlap img {
+  object-fit: cover;
+}
+
 .imageOverlap {
   width: 65%;
   height: 350px;

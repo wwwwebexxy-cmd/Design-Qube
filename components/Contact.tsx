@@ -1,53 +1,56 @@
 "use client";
 
-import { FaPhoneAlt, FaWhatsapp, FaRegClock } from "react-icons/fa";
+import { FaEnvelope, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 import styles from "./Contact.module.css";
 import ScrollReveal from "./ScrollReveal";
+
+const mapUrl = "https://maps.google.com/?q=As+Sawari+7+St+-+Abu+Dhabi%2C+UAE";
 
 export default function Contact() {
   return (
     <section id="contact" className={styles.contactSection}>
       <div className={`container ${styles.container}`}>
-        
-        {/* Left Column: Info Blocks */}
         <div className={styles.infoColumn}>
           <ScrollReveal direction="right" delay={0.1}>
             <div className={styles.infoBlock}>
-              <span className={styles.icon}><FaPhoneAlt /></span>
-              <span className={styles.infoText}>+1 (555) 123-4567</span>
+              <span className={styles.icon}><FaMapMarkerAlt aria-hidden="true" /></span>
+              <a className={styles.infoText} href={mapUrl} target="_blank" rel="noreferrer">
+                As Sawari 7 St - Abu Dhabi, UAE
+              </a>
             </div>
           </ScrollReveal>
           <ScrollReveal direction="right" delay={0.2}>
             <div className={styles.infoBlock}>
-              <span className={styles.icon}><FaWhatsapp /></span>
-              <span className={styles.infoText}>WhatsApp Us</span>
+              <span className={styles.icon}><FaEnvelope aria-hidden="true" /></span>
+              <a className={styles.infoText} href="mailto:info@designqube.ae">info@designqube.ae</a>
             </div>
           </ScrollReveal>
           <ScrollReveal direction="right" delay={0.3}>
             <div className={styles.infoBlock}>
-              <span className={styles.icon}><FaRegClock /></span>
-              <span className={styles.infoText}>Mon - Fri, 9:00 AM - 6:00 PM</span>
+              <span className={styles.icon}><FaPhoneAlt aria-hidden="true" /></span>
+              <div className={styles.infoText}>
+                <a href="tel:+971551869659">+971 55 186 9659</a>
+                <a href="tel:+971552776261">+971 55 277 6261</a>
+              </div>
             </div>
           </ScrollReveal>
         </div>
 
-        {/* Right Column: Map */}
         <div className={styles.mapColumn}>
-          <ScrollReveal direction="left" delay={0.2} style={{ width: '100%', height: '100%' }}>
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215286595561!2d-73.9878239234685!3d40.75716163484931!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sTimes%20Square!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" 
-              width="100%" 
-              height="100%" 
-              style={{ border: 0 }} 
-              allowFullScreen={false} 
-              loading="lazy" 
+          <ScrollReveal direction="left" delay={0.2} style={{ width: "100%", height: "100%" }}>
+            <iframe
+              src="https://maps.google.com/maps?q=As%20Sawari%207%20St%20Abu%20Dhabi%20UAE&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen={false}
+              loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Google Maps"
+              title="DesignQube location in Abu Dhabi"
               className={styles.mapIframe}
-            ></iframe>
+            />
           </ScrollReveal>
         </div>
-
       </div>
     </section>
   );

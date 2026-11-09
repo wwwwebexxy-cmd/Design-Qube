@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styles from "./About.module.css";
 import ScrollReveal from "./ScrollReveal";
 
@@ -7,37 +8,39 @@ export default function About() {
       <div className={`container ${styles.container}`}>
         <div className={styles.imageWrapper}>
           <ScrollReveal direction="right" className={styles.imageMain}>
-            <img 
-              src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80" 
-              alt="Beautifully designed living room" 
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            <Image
+              src="/images/hero-villa.png"
+              alt="Warm, natural stone and oak finishes in a completed Abu Dhabi villa interior"
+              fill
+              sizes="(max-width: 992px) 90vw, 40vw"
             />
           </ScrollReveal>
           <ScrollReveal direction="left" delay={0.3} className={styles.imageOverlap}>
-            <img 
-              src="https://images.unsplash.com/photo-1554995207-c18c203602cb?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-              alt="Interior design detail" 
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            <Image
+              src="/images/bespoke-kitchen.png"
+              alt="Bespoke kitchen joinery and stone finishes"
+              fill
+              sizes="(max-width: 992px) 70vw, 32vw"
             />
           </ScrollReveal>
         </div>
         <div className={styles.textContent}>
           <ScrollReveal direction="up" delay={0.1}>
-            <h2 className="section-title text-gradient" style={{ textAlign: 'left', margin: 0 }}>About Us</h2>
+            <h2 className="section-title text-gradient" style={{ textAlign: "left", margin: 0 }}>About Us</h2>
           </ScrollReveal>
           <ScrollReveal direction="up" delay={0.2}>
-            <h3 className={styles.heading}>We design spaces that feel like home.</h3>
+            <h3 className={styles.heading}>One complete QUBE: design, detail, deliver.</h3>
           </ScrollReveal>
           <ScrollReveal direction="up" delay={0.3}>
             <p className={styles.paragraph}>
-              Great aesthetics meet everyday functionality. We don't just decorate rooms; we design bespoke living spaces tailored perfectly to your lifestyle.
+              DESIGNQUBE is an Abu Dhabi interior design and contracting company. From concept to completion, we shape functional, considered environments through innovative design and precise execution.
             </p>
           </ScrollReveal>
           <ScrollReveal direction="up" delay={0.4}>
             <ul className={styles.featureList}>
-              <li>Award-winning interior designers</li>
-              <li>Premium material selection</li>
-              <li>End-to-end project management</li>
+              <li><strong>Our vision:</strong> to be the UAE&apos;s trusted partner for interior transformation, known for craftsmanship, timely delivery and innovative design.</li>
+              <li><strong>Our mission:</strong> create spaces that inspire, perform and last through detailed drawings, skilled execution and year-round support.</li>
+              <li><strong>Our QUBE:</strong> every project brings design, detail and delivery together, with care in each small element.</li>
             </ul>
           </ScrollReveal>
         </div>

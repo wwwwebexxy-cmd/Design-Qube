@@ -1,31 +1,23 @@
+import Image from "next/image";
 import styles from "./Services.module.css";
 import ScrollReveal from "./ScrollReveal";
 
 const services = [
-  {
-    title: "Residential Design",
-    image: "https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    title: "Commercial Spaces",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    title: "Space Planning",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    title: "Custom Furniture",
-    image: "https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    title: "Lighting Design",
-    image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    title: "Art Curation",
-    image: "https://plus.unsplash.com/premium_photo-1683140589868-4f9b38110050?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-  }
+  { title: "Commercial & Residential Fit-Out Works", description: "Turnkey offices, retail, showrooms, villas and apartments, from shell and core to furnished spaces.", image: "/images/office-fitout.png" },
+  { title: "Construction & Maintenance", description: "Civil construction, structural modifications and preventive maintenance for lasting performance.", image: "/images/hero-villa.png" },
+  { title: "Renovation Work", description: "Full-scale renovation and refurbishment to modernize spaces with minimal disruption.", image: "/images/bespoke-kitchen.png" },
+  { title: "Acoustic Panel Work", description: "Acoustic treatments for offices, auditoriums, studios and restaurants.", image: "/images/office-fitout.png" },
+  { title: "Kitchen Renovation", description: "Modular kitchens, custom cabinetry, countertops and appliance integration.", image: "/images/bespoke-kitchen.png" },
+  { title: "Steam & Sauna Bath Work", description: "Luxury steam rooms, saunas and spa installations with considered waterproofing and woodwork.", image: "/images/spa-sauna.png" },
+  { title: "Design & Detailed Drawing Work", description: "2D and 3D concepts, CAD, MEP and shop drawings, plus authority approvals.", image: "/images/hero-villa.png" },
+  { title: "MEP & Electrical Work", description: "Mechanical, electrical, plumbing, lighting, HVAC, fire safety and power distribution.", image: "/images/office-fitout.png" },
+  { title: "Yearly Maintenance Contracting (AMC)", description: "Annual maintenance contracts for villas, offices and buildings, with support when you need it.", image: "/images/hero-villa.png" },
+  { title: "Joinery & Custom Furniture Works", description: "Custom wardrobes, TV units, reception counters and furniture, crafted with care.", image: "/images/bespoke-kitchen.png" },
+  { title: "False Ceiling & Partition Works", description: "Gypsum and acoustic ceilings, glass partitions and demountable partitions.", image: "/images/office-fitout.png" },
+  { title: "Flooring & Painting Solutions", description: "Marble, parquet, vinyl, epoxy, micro-cement and premium paint finishes.", image: "/images/spa-sauna.png" },
+  { title: "Smart Home & Automation", description: "Home automation, smart lighting and curtain control for connected living.", image: "/images/hero-villa.png" },
+  { title: "Landscape & Outdoor Works", description: "Outdoor spaces with pergolas, decking, BBQ counters and garden lighting.", image: "/images/hero-villa.png" },
+  { title: "Authority Approvals & Project Management", description: "Coordinated approvals and project management for a smoother delivery.", image: "/images/office-fitout.png" },
 ];
 
 export default function Services() {
@@ -37,18 +29,25 @@ export default function Services() {
         </ScrollReveal>
         <ScrollReveal direction="up" delay={0.2}>
           <p className="section-subtitle">
-            Everything you need to transform your space. From the first sketch to the final installation, we handle the heavy lifting so you can enjoy your new home.
+            Comprehensive solutions under one QUBE, from concept and detailed drawings through fit-out, approvals and ongoing maintenance.
           </p>
         </ScrollReveal>
         <div className={styles.grid}>
           {services.map((service, index) => (
-            <ScrollReveal key={index} direction="up" delay={0.2 + (index * 0.1)}>
-              <div className={styles.card}>
-                <img src={service.image} alt={service.title} className={styles.cardImage} />
+            <ScrollReveal key={service.title} direction="up" delay={0.1 + (index % 3) * 0.08}>
+              <article className={styles.card}>
+                <Image
+                  src={service.image}
+                  alt={service.title}
+                  fill
+                  sizes="(max-width: 576px) 100vw, (max-width: 992px) 50vw, 33vw"
+                  className={styles.cardImage}
+                />
                 <div className={styles.overlay}>
                   <h3 className={styles.cardTitle}>{service.title}</h3>
+                  <p className={styles.cardDescription}>{service.description}</p>
                 </div>
-              </div>
+              </article>
             </ScrollReveal>
           ))}
         </div>

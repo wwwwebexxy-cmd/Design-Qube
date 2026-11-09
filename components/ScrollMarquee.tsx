@@ -35,18 +35,19 @@ const ScrollMarquee = () => {
   return (
     <div
       ref={containerRef}
-      className="relative w-full overflow-hidden bg-zinc-900 text-white py-12 md:py-24 2xl:py-32 flex items-center border-y border-zinc-800"
+      className="relative flex w-full items-center overflow-hidden border-y py-12 md:py-24 2xl:py-32"
+      style={{ background: "var(--surface)", borderColor: "var(--card-border)" }}
     >
       <div
         ref={textRef}
         className="flex whitespace-nowrap font-black text-[15vw] uppercase leading-none tracking-tighter text-transparent"
         style={{
           width: "fit-content",
-          WebkitTextStroke: "2px white",
+          WebkitTextStroke: "2px var(--primary)",
         }}
       >
-        <span className="pr-8 md:pr-16 lg:pr-24 2xl:pr-32">LUXURY INTERIORS • ARCHITECTURE • MODERN SPACES • DESIGN • </span>
-        <span className="pr-8 md:pr-16 lg:pr-24 2xl:pr-32">LUXURY INTERIORS • ARCHITECTURE • MODERN SPACES • DESIGN • </span>
+        <span className="pr-8 md:pr-16 lg:pr-24 2xl:pr-32">DESIGN • DETAIL • DELIVER • INTERIOR FIT-OUT • CONTRACTING • </span>
+        <span className="pr-8 md:pr-16 lg:pr-24 2xl:pr-32">DESIGN • DETAIL • DELIVER • INTERIOR FIT-OUT • CONTRACTING • </span>
       </div>
     </div>
   );

@@ -1,0 +1,57 @@
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  white-space: nowrap;
+}
+
+.mark {
+  display: block;
+  width: 2.65rem;
+  height: 2.65rem;
+  flex: 0 0 auto;
+}
+
+.wordmark {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+}
+
+.name {
+  display: flex;
+  gap: 0.15em;
+  font-size: 1.05rem;
+  font-weight: 650;
+  letter-spacing: 0.13em;
+  line-height: 1;
+}
+
+.accent {
+  color: var(--primary);
+}
+
+.tagline {
+  font-size: 0.47rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+@media (max-width: 480px) {
+  .mark {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .name {
+    font-size: 0.88rem;
+    letter-spacing: 0.11em;
+  }
+
+  .tagline {
+    font-size: 0.39rem;
+    letter-spacing: 0.13em;
+  }
+}

@@ -1,8 +1,9 @@
 .footer {
-  background: rgba(0, 0, 0, 0.8);
-  border-top: 1px solid var(--card-border);
-  padding-top: 4rem;
   margin-top: 4rem;
+  border-top: 1px solid var(--card-border);
+  background: var(--footer-background);
+  color: var(--footer-foreground);
+  padding-top: 4rem;
 }
 
 .container {
@@ -16,84 +17,79 @@
 .brand {
   flex: 2;
   min-width: 280px;
-}
-
-.logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--foreground);
-  margin-bottom: 1rem;
+  color: var(--footer-foreground);
 }
 
 .description {
-  color: var(--text-muted);
-  line-height: 1.6;
   max-width: 350px;
+  color: var(--footer-muted);
+  line-height: 1.6;
 }
 
 .linksGroup {
-  flex: 1;
-  min-width: 150px;
   display: flex;
+  min-width: 170px;
+  flex: 1;
   flex-direction: column;
   gap: 0.75rem;
 }
 
 .columnTitle {
-  font-size: 1.125rem;
+  margin: 0 0 0.25rem;
+  color: var(--footer-foreground);
+  font-size: 1.05rem;
   font-weight: 600;
-  margin-bottom: 1rem;
-  color: var(--foreground);
 }
 
 .link {
-  color: var(--text-muted);
+  color: var(--footer-muted);
+  line-height: 1.5;
   transition: color 0.2s ease;
 }
 
 .link:hover {
-  color: var(--primary);
+  color: var(--secondary);
 }
 
 .bottomBar {
-  border-top: 1px solid var(--card-border);
-  padding: 2rem;
-  text-align: center;
-  color: var(--text-muted);
+  padding: 1.5rem 2rem;
+  border-top: 1px solid rgba(247, 245, 240, 0.12);
+  color: var(--footer-muted);
   font-size: 0.875rem;
+  text-align: center;
+}
+
+.bottomBar p {
+  margin: 0;
 }
 
 @media (max-width: 768px) {
   .footer {
-    padding-top: 2rem;
     margin-top: 2rem;
+    padding-top: 2rem;
   }
+
   .container {
     flex-direction: column;
+    align-items: center;
     gap: 1.5rem;
     padding-bottom: 1.5rem;
-    align-items: center;
     text-align: center;
   }
+
   .brand {
     min-width: 100%;
   }
-  .logo {
-    font-size: 1.25rem;
-  }
+
   .description {
-    font-size: 0.875rem;
-    margin: 0 auto;
+    margin: 1rem auto 0;
+    font-size: 0.9rem;
   }
-  .columnTitle {
-    font-size: 1rem;
-  }
-  .link {
-    font-size: 0.875rem;
-  }
+
   .linksGroup {
     align-items: center;
   }
+
   .bottomBar {
     padding: 1rem;
     font-size: 0.75rem;
