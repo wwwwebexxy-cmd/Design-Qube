@@ -12,15 +12,15 @@ if (typeof window !== "undefined") {
 }
 
 const villaScenes = [
-  "/images/hero-villa-scroll.webp",
-  "/images/hero-residence-detail.webp",
-  "/images/hero-villa-dining.webp",
+  "/images/hero-project-site-start.webp",
+  "/images/hero-project-ceiling-fitout.webp",
+  "/images/hero-project-complete-living.webp",
 ];
 
 const hospitalityScenes = [
-  "/images/hero-hospitality-scroll.webp",
-  "/images/hero-office-lounge.webp",
-  "/images/hero-hotel-lounge.webp",
+  "/images/hero-project-electrical-check.webp",
+  "/images/hero-project-joinery-fitout.webp",
+  "/images/hero-project-complete-kitchen.webp",
 ];
 
 const headlineScenes = [
