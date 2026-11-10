@@ -46,7 +46,7 @@ export default function Hero() {
       );
       if (
         roomItems.length !== ROOM_REVEAL_ITEM_COUNT ||
-        constructionLayers.length !== 2 ||
+        constructionLayers.length !== 3 ||
         headlineFrames.length !== headlineScenes.length
       ) {
         return;
@@ -73,16 +73,17 @@ export default function Hero() {
           },
         });
 
-        // Finish the ceiling first, then the glazing, in the same registered room view.
+        // Start with wall and marble work, then finish the ceiling and glazing in the same room view.
         timeline
-          .to(constructionLayers[0], { autoAlpha: 0, duration: 0.1, ease: "none" }, 0.04)
-          .to(constructionLayers[1], { autoAlpha: 0, duration: 0.1, ease: "none" }, 0.16);
+          .to(constructionLayers[0], { autoAlpha: 0, duration: 0.1, ease: "none" }, 0.02)
+          .to(constructionLayers[1], { autoAlpha: 0, duration: 0.1, ease: "none" }, 0.12)
+          .to(constructionLayers[2], { autoAlpha: 0, duration: 0.1, ease: "none" }, 0.22);
 
         roomItems.forEach((item, index) => {
           timeline.to(
             item,
             { autoAlpha: 1, y: 0, duration: 0.085, ease: "power1.out" },
-            0.29 + index * 0.09
+            0.34 + index * 0.09
           );
         });
 
@@ -98,7 +99,7 @@ export default function Hero() {
         });
 
         // Reserve the last fifth of the scroll for the completed room.
-        timeline.to({}, { duration: 0.21 }, 0.925);
+        timeline.to({}, { duration: 0.2 }, 0.95);
       });
 
       return () => media.revert();
@@ -109,6 +110,7 @@ export default function Hero() {
   return (
     <section id="home" ref={sectionRef} className={styles.heroSection}>
       <link rel="preload" as="image" href="/images/hero-project-living-empty.webp" />
+      <link rel="preload" as="image" href="/images/hero-room-walls-marble-work.webp" />
       <link rel="preload" as="image" href="/images/hero-room-construction-stage.webp" />
       <div className={styles.roomViewport}>
         <RoomFurnitureReveal setItemRef={setRoomItemRef} setConstructionRef={setConstructionRef} />

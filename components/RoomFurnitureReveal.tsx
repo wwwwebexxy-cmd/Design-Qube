@@ -48,6 +48,9 @@ export default function RoomFurnitureReveal({ setItemRef, setConstructionRef }: 
         <clipPath id={`${id}-ceiling`}>
           <path d="M0 0 H1672 V235 L1530 239 L1454 267 L1382 305 L1287 328 L1213 347 C1188 361 1160 369 1110 371 H476 C431 369 408 348 394 320 C382 294 379 265 376 239 L367 174 L0 110 Z" />
         </clipPath>
+        <clipPath id={`${id}-wall-marble-work`}>
+          <path d="M452 238 L662 292 L658 722 L468 747 Z M817 356 L953 377 L951 680 L814 687 Z M1540 270 L1672 229 V694 L1550 705 Z M430 795 L478 740 L656 725 L814 709 L953 692 L1097 686 L1318 661 L1478 648 L1522 694 L1456 941 H430 Z" />
+        </clipPath>
         <clipPath id={`${id}-glass`}>
           <path d="M8 110 L52 111 L52 811 L8 819 Z M56 111 L99 124 L99 796 L56 804 Z M111 128 L192 147 L192 781 L111 794 Z M201 148 L432 223 L432 772 L201 757 Z" />
         </clipPath>
@@ -55,10 +58,13 @@ export default function RoomFurnitureReveal({ setItemRef, setConstructionRef }: 
 
       {/* This clean plate never moves, zooms or fades. Each overlay has real alpha. */}
       {sceneImage("/images/hero-project-living-empty.webp")}
-      <g ref={(element) => setConstructionRef(0, element)} className={styles.constructionLayer} clipPath={clip("ceiling")}>
+      <g ref={(element) => setConstructionRef(0, element)} className={styles.constructionLayer} clipPath={clip("wall-marble-work")}>
+        {sceneImage("/images/hero-room-walls-marble-work.webp")}
+      </g>
+      <g ref={(element) => setConstructionRef(1, element)} className={styles.constructionLayer} clipPath={clip("ceiling")}>
         {sceneImage("/images/hero-room-construction-stage.webp")}
       </g>
-      <g ref={(element) => setConstructionRef(1, element)} className={styles.constructionLayer} clipPath={clip("glass")}>
+      <g ref={(element) => setConstructionRef(2, element)} className={styles.constructionLayer} clipPath={clip("glass")}>
         {sceneImage("/images/hero-room-construction-stage.webp")}
       </g>
       <g ref={(element) => setItemRef(2, element)} className={styles.roomItem} data-room-item="rug">
