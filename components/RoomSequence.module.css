@@ -1,0 +1,51 @@
+.scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background-color: #171411;
+  background-image: url("/images/hero-sequence/desktop/frame_000.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  pointer-events: none;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.scene[data-static="true"] {
+  background-image: url("/images/hero-sequence/desktop/frame_119.webp");
+}
+
+.scene[data-static="true"] .canvas {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .scene {
+    background-image: url("/images/hero-sequence/mobile/frame_000.webp");
+  }
+
+  .scene[data-static="true"] {
+    background-image: url("/images/hero-sequence/mobile/frame_119.webp");
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene {
+    background-image: url("/images/hero-sequence/desktop/frame_119.webp");
+  }
+
+  .canvas {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .scene {
+    background-image: url("/images/hero-sequence/mobile/frame_119.webp");
+  }
+}

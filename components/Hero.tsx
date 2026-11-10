@@ -4,152 +4,135 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import RoomSequence, { type RoomSequenceHandle } from "./RoomSequence";
 import styles from "./Hero.module.css";
-import RoomFurnitureReveal, { ROOM_REVEAL_ITEM_COUNT } from "./RoomFurnitureReveal";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
 
-const headlineScenes = [
-  { firstLine: "Design. Detail.", secondLine: "Deliver." },
-  { firstLine: "Precision meets", secondLine: "design." },
-  { firstLine: "Spaces made", secondLine: "personal." },
+const chapters = [
+  {
+    label: "01 / Architecture",
+    title: "Design. Detail. Deliver.",
+    description: "Interior fit-out and contracting in Abu Dhabi, from the first concept and detailed drawings to precise execution and handover.",
+  },
+  {
+    label: "02 / Structure",
+    title: "Precision meets design.",
+    description: "From detailed drawings to precise execution.",
+  },
+  {
+    label: "03 / Design",
+    title: "Spaces made personal.",
+    description: "Every detail brought together, from the first concept to the finished interior.",
+  },
+  {
+    label: "04 / Experience",
+    title: "From concept to handover.",
+    description: "Design. Detail. Deliver. Interior fit-out and contracting in Abu Dhabi.",
+  },
 ];
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const roomItemsRef = useRef<Array<SVGGElement | null>>([]);
-  const constructionLayersRef = useRef<Array<SVGGElement | null>>([]);
-  const headlineFramesRef = useRef<Array<HTMLSpanElement | null>>([]);
-  const setRoomItemRef = (index: number, element: SVGGElement | null) => {
-    roomItemsRef.current[index] = element;
-  };
-  const setConstructionRef = (index: number, element: SVGGElement | null) => {
-    constructionLayersRef.current[index] = element;
-  };
+  const sequenceRef = useRef<RoomSequenceHandle>(null);
+  const chapterRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const scrollHintRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLSpanElement>(null);
+  const progressLineRef = useRef<HTMLSpanElement>(null);
 
-  useGSAP(
-    () => {
-      if (!sectionRef.current) {
-        return;
-      }
+  useGSAP(() => {
+    const chapterElements = chapterRefs.current.filter(
+      (chapter): chapter is HTMLDivElement => chapter !== null
+    );
+    if (!sectionRef.current || chapterElements.length !== chapters.length) return;
 
-      const roomItems = roomItemsRef.current.filter(
-        (item): item is SVGGElement => item !== null
-      );
-      const headlineFrames = headlineFramesRef.current.filter(
-        (frame): frame is HTMLSpanElement => frame !== null
-      );
-      const constructionLayers = constructionLayersRef.current.filter(
-        (layer): layer is SVGGElement => layer !== null
-      );
-      if (
-        roomItems.length !== ROOM_REVEAL_ITEM_COUNT ||
-        constructionLayers.length !== 3 ||
-        headlineFrames.length !== headlineScenes.length
-      ) {
-        return;
-      }
+    const media = gsap.matchMedia();
+    media.add("(prefers-reduced-motion: no-preference)", () => {
+      const playhead = { progress: 0 };
+      let lastPercentage = -1;
+      gsap.set(chapterElements, { autoAlpha: 0, y: 28 });
+      gsap.set(chapterElements[0], { autoAlpha: 1, y: 0 });
+      sequenceRef.current?.render(0);
 
-      const media = gsap.matchMedia();
-      media.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.set(headlineFrames, { autoAlpha: 0, yPercent: 12 });
-        gsap.set(headlineFrames[0], { autoAlpha: 1, yPercent: 0 });
-        gsap.set(roomItems, { autoAlpha: 0, y: 10 });
-        gsap.set(constructionLayers, { autoAlpha: 1 });
-
-        // One pinned, scroll-driven sequence, as in the reference recording.
-        // The room itself stays fixed; completed items remain in the scene.
-        const timeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: () => (window.innerWidth <= 768 ? "+=165%" : "+=230%"),
-            scrub: 0.8,
-            pin: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-          },
-        });
-
-        // Start with wall and marble work, then finish the ceiling and glazing in the same room view.
-        timeline
-          .to(constructionLayers[0], { autoAlpha: 0, duration: 0.1, ease: "none" }, 0.02)
-          .to(constructionLayers[1], { autoAlpha: 0, duration: 0.1, ease: "none" }, 0.12)
-          .to(constructionLayers[2], { autoAlpha: 0, duration: 0.1, ease: "none" }, 0.22);
-
-        roomItems.forEach((item, index) => {
-          timeline.to(
-            item,
-            { autoAlpha: 1, y: 0, duration: 0.085, ease: "power1.out" },
-            0.34 + index * 0.09
-          );
-        });
-
-        [0.37, 0.72].forEach((position, sceneIndex) => {
-          timeline
-            .to(headlineFrames[sceneIndex], { autoAlpha: 0, yPercent: -8, duration: 0.045, ease: "none" }, position)
-            .fromTo(
-              headlineFrames[sceneIndex + 1],
-              { autoAlpha: 0, yPercent: 8 },
-              { autoAlpha: 1, yPercent: 0, duration: 0.065, ease: "none" },
-              position + 0.045
-            );
-        });
-
-        // Reserve the last fifth of the scroll for the completed room.
-        timeline.to({}, { duration: 0.2 }, 0.95);
+      const timeline = gsap.timeline({
+        defaults: { ease: "none" },
+        onUpdate: () => {
+          sequenceRef.current?.render(playhead.progress);
+          const percentage = Math.round(timeline.progress() * 100);
+          if (percentage !== lastPercentage && progressRef.current) {
+            progressRef.current.textContent = String(percentage).padStart(2, "0") + "%";
+            lastPercentage = percentage;
+          }
+        },
+        scrollTrigger: {
+          id: "designqube-room-story",
+          trigger: sectionRef.current,
+          start: "top top",
+          end: () => window.innerWidth <= 768 ? "+=240%" : "+=300%",
+          pin: true,
+          scrub: 0.65,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
       });
 
-      return () => media.revert();
-    },
-    { scope: sectionRef }
-  );
+      // One fixed-camera sequence. The final 8% holds the finished room.
+      timeline.to(playhead, { progress: 1, duration: 0.92 }, 0);
+      timeline.to(progressLineRef.current, { scaleX: 1, duration: 1 }, 0);
+      timeline.to(scrollHintRef.current, { autoAlpha: 0, y: -8, duration: 0.08 }, 0);
+      timeline.to(chapterElements[0], { autoAlpha: 0, y: -28, duration: 0.07 }, 0.15);
+
+      [0.25, 0.5, 0.75].forEach((position, index) => {
+        timeline.to(chapterElements[index + 1], { autoAlpha: 1, y: 0, duration: 0.05 }, position);
+        if (index < 2) {
+          timeline.to(chapterElements[index + 1], { autoAlpha: 0, y: -28, duration: 0.07 }, position + 0.15);
+        }
+      });
+      // Keep the final links available as the scene releases into the next section.
+    });
+
+    return () => media.revert();
+  }, { scope: sectionRef });
 
   return (
-    <section id="home" ref={sectionRef} className={styles.heroSection}>
-      <link rel="preload" as="image" href="/images/hero-project-living-empty.webp" />
-      <link rel="preload" as="image" href="/images/hero-room-walls-marble-work.webp" />
-      <link rel="preload" as="image" href="/images/hero-room-construction-stage.webp" />
+    <section id="home" ref={sectionRef} className={styles.heroSection} aria-label="DesignQube interior transformation">
+      <link rel="preload" as="image" href="/images/hero-sequence/desktop/frame_000.webp" media="(min-width: 769px) and (prefers-reduced-motion: no-preference)" />
+      <link rel="preload" as="image" href="/images/hero-sequence/mobile/frame_000.webp" media="(max-width: 768px) and (prefers-reduced-motion: no-preference)" />
       <div className={styles.roomViewport}>
-        <RoomFurnitureReveal setItemRef={setRoomItemRef} setConstructionRef={setConstructionRef} />
-      </div>
-      <div className={styles.overlayContent}>
-        <div className={styles.contentBlock}>
-          <h1 className={styles.title} aria-label="Design. Detail. Deliver.">
-            <span className={styles.headlineStack} aria-hidden="true">
-              {headlineScenes.map((scene, index) => (
-                <span
-                  key={scene.firstLine}
-                  ref={(element) => { headlineFramesRef.current[index] = element; }}
-                  className={styles.headlineFrame}
-                >
-                  {scene.firstLine}<br /><span className="text-gradient">{scene.secondLine}</span>
-                </span>
-              ))}
-            </span>
-          </h1>
-        </div>
-      </div>
-      <div className={styles.overlayContentRight}>
-        <div className={styles.contentBlock}>
-          <p className={styles.subtitle}>
-            Interior fit-out and contracting in Abu Dhabi, from the first concept and detailed drawings to precise execution and handover.
-          </p>
-        </div>
-        <div className={styles.contentBlock}>
-          <div className={styles.ctaGroup}>
-            <a href="#contact" className={styles.primaryBtn}>Discuss your project</a>
-            <a href="#services" className={styles.secondaryBtn}>Our services</a>
-          </div>
-        </div>
+        <RoomSequence ref={sequenceRef} />
       </div>
 
-      <div className={styles.wavyDivider}>
-        <svg viewBox="0 0 1440 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M0,50 C320,150 420,-50 740,50 C1060,150 1160,-50 1440,50 L1440,100 L0,100 Z" fill="var(--background)" />
-        </svg>
+      <div className={styles.storyContent}>
+        {chapters.map((chapter, index) => (
+          <div
+            key={chapter.label}
+            ref={(element) => { chapterRefs.current[index] = element; }}
+            className={styles.chapter}
+          >
+            <p className={styles.eyebrow}>{chapter.label}</p>
+            {index === 0
+              ? <h1 className={styles.title}>{chapter.title}</h1>
+              : <h2 className={styles.title}>{chapter.title}</h2>}
+            <p className={styles.description}>{chapter.description}</p>
+            {index === chapters.length - 1 && (
+              <div className={styles.ctaGroup}>
+                <a href="#contact" className={styles.primaryBtn}>Discuss your project</a>
+                <a href="#services" className={styles.secondaryBtn}>Our services</a>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div ref={scrollHintRef} className={styles.scrollHint} aria-hidden="true">
+        <span>Scroll to discover</span>
+        <span className={styles.scrollStem} />
+      </div>
+      <div className={styles.progress} aria-hidden="true">
+        <span className={styles.progressTrack}><span ref={progressLineRef} className={styles.progressLine} /></span>
+        <span ref={progressRef} className={styles.progressNumber}>00%</span>
       </div>
     </section>
   );
