@@ -42,6 +42,7 @@ export default function RoomSequence({ ref }: RoomSequenceProps) {
     const canvas = canvasRef.current;
     if (!scene || !canvas) return;
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const mobileViewport = window.matchMedia("(max-width: 768px)");
     let stopSequence = () => {};
 
     const startSequence = () => {
@@ -58,7 +59,7 @@ export default function RoomSequence({ ref }: RoomSequenceProps) {
         return;
       }
 
-      const size = window.matchMedia("(max-width: 768px)").matches ? "mobile" : "desktop";
+      const size = mobileViewport.matches ? "mobile" : "desktop";
       const controller = new AbortController();
       const blobs = new Map<number, Blob>();
       const bitmaps = new Map<number, ImageBitmap>();
@@ -165,7 +166,8 @@ export default function RoomSequence({ ref }: RoomSequenceProps) {
 
       const resize = () => {
         const bounds = canvas.getBoundingClientRect();
-        const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
+        const maxPixelRatio = mobileViewport.matches ? 1.25 : 1.5;
+        const ratio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
         const width = Math.max(1, Math.round(bounds.width * ratio));
         const height = Math.max(1, Math.round(bounds.height * ratio));
         if (canvas.width === width && canvas.height === height) return;
@@ -196,8 +198,10 @@ export default function RoomSequence({ ref }: RoomSequenceProps) {
 
     startSequence();
     motion.addEventListener("change", startSequence);
+    mobileViewport.addEventListener("change", startSequence);
     return () => {
       motion.removeEventListener("change", startSequence);
+      mobileViewport.removeEventListener("change", startSequence);
       stopSequence();
     };
   }, []);

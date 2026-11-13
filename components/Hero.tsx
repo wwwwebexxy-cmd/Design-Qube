@@ -49,49 +49,58 @@ export default function Hero() {
     if (!sectionRef.current || chapterElements.length !== chapters.length) return;
 
     const media = gsap.matchMedia();
-    media.add("(prefers-reduced-motion: no-preference)", () => {
-      const playhead = { progress: 0 };
-      let lastPercentage = -1;
-      gsap.set(chapterElements, { autoAlpha: 0, y: 28 });
-      gsap.set(chapterElements[0], { autoAlpha: 1, y: 0 });
-      sequenceRef.current?.render(0);
+    media.add(
+      {
+        mobile: "(max-width: 768px)",
+        motion: "(prefers-reduced-motion: no-preference)",
+      },
+      (context) => {
+        if (!context.conditions?.motion) return;
 
-      const timeline = gsap.timeline({
-        defaults: { ease: "none" },
-        onUpdate: () => {
-          sequenceRef.current?.render(playhead.progress);
-          const percentage = Math.round(timeline.progress() * 100);
-          if (percentage !== lastPercentage && progressRef.current) {
-            progressRef.current.textContent = String(percentage).padStart(2, "0") + "%";
-            lastPercentage = percentage;
+        const isMobile = Boolean(context.conditions.mobile);
+        const playhead = { progress: 0 };
+        let lastPercentage = -1;
+        gsap.set(chapterElements, { autoAlpha: 0, y: 28 });
+        gsap.set(chapterElements[0], { autoAlpha: 1, y: 0 });
+        sequenceRef.current?.render(0);
+
+        const timeline = gsap.timeline({
+          defaults: { ease: "none" },
+          onUpdate: () => {
+            sequenceRef.current?.render(playhead.progress);
+            const percentage = Math.round(timeline.progress() * 100);
+            if (percentage !== lastPercentage && progressRef.current) {
+              progressRef.current.textContent = String(percentage).padStart(2, "0") + "%";
+              lastPercentage = percentage;
+            }
+          },
+          scrollTrigger: {
+            id: "designqube-room-story",
+            trigger: sectionRef.current,
+            start: "top top",
+            end: isMobile ? "+=200%" : "+=300%",
+            pin: true,
+            scrub: isMobile ? 0.4 : 0.65,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        // One fixed-camera sequence. The final 8% holds the finished room.
+        timeline.to(playhead, { progress: 1, duration: 0.92 }, 0);
+        timeline.to(progressLineRef.current, { scaleX: 1, duration: 1 }, 0);
+        timeline.to(scrollHintRef.current, { autoAlpha: 0, y: -8, duration: 0.08 }, 0);
+        timeline.to(chapterElements[0], { autoAlpha: 0, y: -28, duration: 0.07 }, 0.15);
+
+        [0.25, 0.5, 0.75].forEach((position, index) => {
+          timeline.to(chapterElements[index + 1], { autoAlpha: 1, y: 0, duration: 0.05 }, position);
+          if (index < 2) {
+            timeline.to(chapterElements[index + 1], { autoAlpha: 0, y: -28, duration: 0.07 }, position + 0.15);
           }
-        },
-        scrollTrigger: {
-          id: "designqube-room-story",
-          trigger: sectionRef.current,
-          start: "top top",
-          end: () => window.innerWidth <= 768 ? "+=240%" : "+=300%",
-          pin: true,
-          scrub: 0.65,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      // One fixed-camera sequence. The final 8% holds the finished room.
-      timeline.to(playhead, { progress: 1, duration: 0.92 }, 0);
-      timeline.to(progressLineRef.current, { scaleX: 1, duration: 1 }, 0);
-      timeline.to(scrollHintRef.current, { autoAlpha: 0, y: -8, duration: 0.08 }, 0);
-      timeline.to(chapterElements[0], { autoAlpha: 0, y: -28, duration: 0.07 }, 0.15);
-
-      [0.25, 0.5, 0.75].forEach((position, index) => {
-        timeline.to(chapterElements[index + 1], { autoAlpha: 1, y: 0, duration: 0.05 }, position);
-        if (index < 2) {
-          timeline.to(chapterElements[index + 1], { autoAlpha: 0, y: -28, duration: 0.07 }, position + 0.15);
-        }
-      });
-      // Keep the final links available as the scene releases into the next section.
-    });
+        });
+        // Keep the final links available as the scene releases into the next section.
+      }
+    );
 
     return () => media.revert();
   }, { scope: sectionRef });
